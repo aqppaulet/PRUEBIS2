@@ -1,9 +1,16 @@
 #include <iostream>
 
-using namespace std;
+#include "include/BufferPoolManager.h"
+#include "include/Page.h"
 
-int main(int argc, char const *argv[]) {
-  /* code */
-  cout << "Hello Buffer!" << endl;
-  return 0;
+int main() {
+    while (true) {
+        int instruction;
+        std::cout << "Select an instruction: 1. Create a new page 2. Read a page 3. Write a page 4. Exit" << std::endl;
+        std::cin >> instruction;
+        if (instruction == 4) {
+            break;
+        }
+    }
+    return 0;
 }
