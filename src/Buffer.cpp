@@ -62,6 +62,8 @@ void Buffer::addRecord(int frameID) {
     if (page_table[frameID] == 1) {
       Page& page = frames[frameID];
       page.setContent(record);
+      page.setDirtyFlag(true);
+      page.setPinCount(1);
       cout << "Registro agregado al frame " << frameID << endl;
     } else {
       cout << "El frame " << frameID << " está vacío" << endl;
