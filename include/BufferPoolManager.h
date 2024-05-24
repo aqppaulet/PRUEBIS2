@@ -2,11 +2,25 @@
 #define BUFFERPOOLMANAGER_H
 
 #include <iostream>
-#include <unordered_map>
+
+#include "../include/Page.h"
+#include "Buffer.h"
 
 class BufferPoolManager {
+ private:
+  Buffer bf;
+  int numFramesTotal;
+
  public:
-  std::unordered_map<int, int> page_table;
+  BufferPoolManager();
+
+  void loadPageFromDisk(string blockPath);
+
+  void updatePage();
+
+  void deletePage();
+
+  void flushPage();
 };
 
 #endif
