@@ -22,6 +22,9 @@ class Buffer {
   void printPage(int frameID);
 
   void addRecord(int frameID);
+
+  int freeFrame();
+  void printPage_table();
 };
 
 #endif

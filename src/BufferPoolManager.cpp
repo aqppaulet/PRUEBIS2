@@ -2,18 +2,18 @@
 
 BufferPoolManager::BufferPoolManager() { this->numFramesTotal = 3; }
 
+int BufferPoolManager::getFreeFrame() { return 0; }
 void BufferPoolManager::loadPageFromDisk(string blockPath) {
   Page tempPage;
-
-  tempPage.setFrameID(1);
+  int newId = bf.freeFrame();
+  tempPage.setFrameID(newId);
 
   tempPage.setContent("Megatron       5345453   Cybertron");
   tempPage.setContent("OptimusPrime   3334454   Cybertron");
   // tempPage.setContent("Bomboldi       9999999   Cybertron");
   // tempPage.setContent("Ultron         5465464   Primal   ");
-  bf.setPage(tempPage, 1);
 
-  cout << "\nPagina cargada Correctamente\n" << endl;
+  bf.setPage(tempPage, newId);
 }
 
 void BufferPoolManager::updatePage() {
@@ -27,8 +27,12 @@ void BufferPoolManager::updatePage() {
 
   // en addRecord estamos supomniendo que vamos a ingresar para la pagina 1
   if (option == 1) {
-    bf.addRecord(1);
+    cout << "[A que pagina quieres agregar el registro] => ";
+    cin >> option;
+    bf.addRecord(option);
   } else if (option == 3) {
-    bf.printPage(1);
+    cout << "[Que pagina quieres mostrar] => ";
+    cin >> option;
+    bf.printPage(option);
   }
 }

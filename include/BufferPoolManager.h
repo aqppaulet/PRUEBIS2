@@ -11,6 +11,8 @@ class BufferPoolManager {
   Buffer bf;
   int numFramesTotal;
 
+  int getFreeFrame();
+
  public:
   BufferPoolManager();
 

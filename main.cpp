@@ -8,13 +8,14 @@ int main() {
 
   while (true) {
     int instruction;
-    std::cout << "1. Create a new page " << endl;
+    std::cout << "1. Load page " << endl;
     std::cout << "2. Read a page " << endl;
     std::cout << "3. Update a page " << endl;
-    std::cout << "4. Exit" << endl;
+    std::cout << "4. Save page " << endl;
+    std::cout << "5. Exit" << endl;
     std::cin >> instruction;
 
-    if (instruction == 4) {
+    if (instruction == 5) {
       break;
     } else if (instruction == 1) {
       BfManger.loadPageFromDisk("bloque1");
