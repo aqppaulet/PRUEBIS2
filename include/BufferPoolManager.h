@@ -3,12 +3,14 @@
 
 #include <iostream>
 
-#include "../include/Page.h"
+#include "../include/LRU.h"
 #include "Buffer.h"
+#include "Page.h"
 
 class BufferPoolManager {
  private:
   Buffer bf;
+  LRU LRU_replace;
   int numFramesTotal;
 
  public:
@@ -20,7 +22,7 @@ class BufferPoolManager {
 
   void deletePage();
 
-  void flushPage();
+  void savePageToDisk(int pageId);
 };
 
 #endif

@@ -98,3 +98,8 @@ void Buffer::printPage_table() {
                 << std::endl;
   }
 }
+
+bool Buffer::pageIsDirty(int pageID) {
+  Page& page = frames[pageID];
+  return page.isDirty();
+}

@@ -22,6 +22,7 @@ class Buffer {
   void printPage(int frameID);
 
   void addRecord(int frameID);
+  bool pageIsDirty(int pageID);
 
   int freeFrame();
   void printPage_table();

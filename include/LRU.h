@@ -7,12 +7,16 @@ using namespace std;
 
 class LRU {
  private:
+  int size;
   vector<int> lru;
 
  public:
-  void pin(int pageID);
-  void unPin();
+  LRU();
+  LRU(int size_);
+  void addPageIDtoLRU(int pageID);
+  void deletePageIDfromLRU();
   int getLRUforDelete();
+  void printLRU();
 };
 
 #endif

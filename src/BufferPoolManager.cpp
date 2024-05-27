@@ -1,10 +1,27 @@
 #include "../include/BufferPoolManager.h"
 
-BufferPoolManager::BufferPoolManager() { this->numFramesTotal = 3; }
+BufferPoolManager::BufferPoolManager() {
+  this->numFramesTotal = 3;
+  LRU_replace = LRU(numFramesTotal);
+}
 
 void BufferPoolManager::loadPageFromDisk(string blockPath) {
   Page tempPage;
   int newId = bf.freeFrame();
+
+  // Si es -2 es porque todos los frames ya estan ocupados
+  if (newId == -2) {
+    newId = LRU_replace.getLRUforDelete();
+    LRU_replace.deletePageIDfromLRU();
+
+    savePageToDisk(newId);
+
+    LRU_replace.addPageIDtoLRU(newId);
+
+  } else {
+    LRU_replace.addPageIDtoLRU(newId);
+  }
+
   tempPage.setFrameID(newId);
 
   tempPage.setContent("Megatron       5345453   Cybertron");
@@ -13,6 +30,7 @@ void BufferPoolManager::loadPageFromDisk(string blockPath) {
   // tempPage.setContent("Ultron         5465464   Primal   ");
 
   bf.setPage(tempPage, newId);
+  LRU_replace.printLRU();
 }
 
 void BufferPoolManager::updatePage() {
@@ -33,5 +51,15 @@ void BufferPoolManager::updatePage() {
     cout << "[Que pagina quieres mostrar] => ";
     cin >> option;
     bf.printPage(option);
+  }
+}
+
+void BufferPoolManager::savePageToDisk(int pageId) {
+  Page newfreeFrame;
+  if (bf.pageIsDirty(pageId) == true) {
+    cout << "Saving page in the DISK" << endl;
+    bf.setPage(newfreeFrame, pageId);
+  } else {
+    bf.setPage(newfreeFrame, pageId);
   }
 }
