@@ -6,22 +6,31 @@
 
 using namespace std;
 
+
+//Inicializamos el buffer con un número fijo de frames y capacidad.
 Buffer::Buffer() {
   this->numFrames = 3;
   this->capacity = 360;
 
   Page frame;
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; i++) {     //Llena el vector de frames con instancias de la clase Page
     this->frames.push_back(frame);
-    page_table[i] = -1;
+    page_table[i] = -1;             // configura la tabla de páginas como vacía.
   }
 
   printPage_table();
 }
 
+
+//proporciona acceso al vector de frames, permitiendo la manipulación directa de las páginas en el buffer desde fuera de la clase.
 vector<Page>& Buffer::getFrames() { return frames; }
 
+/*
+Carga una página en un frame específico dentro del buffer
+actualizado la tabla de páginas
+imprime el contenido sobre el estado actual del buffer y la página cargada.
+*/
 void Buffer::setPage(Page& page, int frameID) {
   if (frameID >= 0 && frameID < numFrames) {
     frames[frameID] = page;
@@ -37,6 +46,9 @@ void Buffer::setPage(Page& page, int frameID) {
   cout << "\nPagina [" << frameID << "] cargada Correctamente\n" << endl;
 }
 
+
+
+//Permite visualizar el contenido y estado de una página específica en el buffer, se considera solo los frames cargados.
 void Buffer::printPage(int pageID) {
   cout << "= ===================================" << endl;
   if (pageID >= 0 && pageID < numFrames) {
@@ -62,6 +74,7 @@ void Buffer::printPage(int pageID) {
   cout << "= ===================================" << endl;
 }
 
+//Añade un registro a una página específica en el buffer, marcando la página como modificada y actualizando el contador de pines.
 void Buffer::addRecord(int pageID) {
   string record = "Transformer    3454354  cybertron";
   if (pageID >= 0 && pageID < numFrames) {
@@ -79,6 +92,10 @@ void Buffer::addRecord(int pageID) {
   }
 }
 
+/*
+Busca un frame libre en el buffer para cargar una nueva página.
+permitiendo saber si hay espacio disponible para nuevas páginas.
+*/
 int Buffer::freeFrame() {
   for (auto it = page_table.begin(); it != page_table.end(); ++it) {
     if (it->second == -1) return it->first;
@@ -88,6 +105,8 @@ int Buffer::freeFrame() {
   return -2;
 }
 
+
+//Imprime el estado actual de la tabla de páginas
 void Buffer::printPage_table() {
   for (auto it = page_table.begin(); it != page_table.end(); ++it) {
     if (it->second == 1)
@@ -99,6 +118,7 @@ void Buffer::printPage_table() {
   }
 }
 
+//Comprueba si una página específica ha sido modificada (está sucia)
 bool Buffer::pageIsDirty(int pageID) {
   Page& page = frames[pageID];
   return page.isDirty();

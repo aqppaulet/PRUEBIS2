@@ -1,9 +1,20 @@
 #include "../include/BufferPoolManager.h"
 
+
+
+//configura LRU (Least Recently Used) con el número total de frames.
+
 BufferPoolManager::BufferPoolManager() {
   this->numFramesTotal = 3;
   LRU_replace = LRU(numFramesTotal);
 }
+
+/*
+
+Carga una página desde el disco al buffer pool.
+Si todos los frames están ocupados, selecciona un frame para reemplazar usando el algoritmo LRU
+guarda la página reemplazada en el disco y luego carga la nueva página en ese frame.
+*/
 
 void BufferPoolManager::loadPageFromDisk(string blockPath) {
   Page tempPage;
@@ -33,6 +44,11 @@ void BufferPoolManager::loadPageFromDisk(string blockPath) {
   LRU_replace.printLRU();
 }
 
+
+/*
+  Permite al usuario interactuar con el buffer pool para agregar registros o mostrar una página específica.
+
+*/
 void BufferPoolManager::updatePage() {
   cout << "===================================" << endl;
   cout << "Que deseas realizar?" << endl;

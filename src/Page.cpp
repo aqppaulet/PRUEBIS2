@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+//Constructor por defecto que inicializa los atributos de la página con valores predeterminados
 Page::Page()
     : pageCapacity(120),
       frameID(-1),
@@ -10,23 +11,25 @@ Page::Page()
       lastUsedTime(0),
       content() {}
 
+//Marca la página como sucia, indicando que ha sido modificada
 void Page::activateDirty() { dirty_flag = true; }
 
+//Incrementa el contador de pin cuando la pagina es usada
 void Page::incrementPinCount() { ++pinCount; }
 
+//Decrementa el contador de pines si es mayor que cero
 void Page::decrementPinCount() {
   if (pinCount > 0) {
     --pinCount;
   }
 }
 
+//Devuelve el contador de pines actual
 int Page::getPinCount() const { return pinCount; }
 
+//Devuelve la marca de la página como sucia
 bool Page::isDirty() const { return dirty_flag; }
 
-int Page::getLastUsedTime() const { return lastUsedTime; }
-
-void Page::updateLastUsedTime(int currentTime) { lastUsedTime = currentTime; }
 
 const vector<string>& Page::getContent() const { return content; }
 
@@ -49,4 +52,4 @@ void Page::setDirtyFlag(bool dirty) { dirty_flag = dirty; }
 
 void Page::setPinCount(int count) { pinCount = count; }
 
-void Page::setLastUsedTime(int time) { lastUsedTime = time; }
+
