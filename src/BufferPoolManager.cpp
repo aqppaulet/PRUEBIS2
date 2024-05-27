@@ -2,7 +2,6 @@
 
 BufferPoolManager::BufferPoolManager() { this->numFramesTotal = 3; }
 
-int BufferPoolManager::getFreeFrame() { return 0; }
 void BufferPoolManager::loadPageFromDisk(string blockPath) {
   Page tempPage;
   int newId = bf.freeFrame();

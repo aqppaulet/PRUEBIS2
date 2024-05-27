@@ -1,16 +1,18 @@
 #ifndef LRU_H
 #define LRU_H
 
+#include <iostream>
+#include <vector>
+using namespace std;
+
 class LRU {
  private:
-  int miss;
-  int hit;
+  vector<int> lru;
 
  public:
-  void push();
-  void pop();
-  void swap();
-  void update();
+  void pin(int pageID);
+  void unPin();
+  int getLRUforDelete();
 };
 
 #endif

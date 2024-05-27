@@ -91,10 +91,10 @@ int Buffer::freeFrame() {
 void Buffer::printPage_table() {
   for (auto it = page_table.begin(); it != page_table.end(); ++it) {
     if (it->second == 1)
-      std::cout << "PageId: " << it->first << ", Valor: " << it->second
+      std::cout << "PageId: " << it->first << ", (status) Used: " << it->second
                 << std::endl;
     else
-      std::cout << "FrameId: " << it->first << ", Valor: " << it->second
+      std::cout << "FrameId: " << it->first << ", (status) Free: " << it->second
                 << std::endl;
   }
 }
