@@ -8,33 +8,25 @@ using namespace std;
 
 class Page {
  private:
-  int frameID;
-  bool dirty_flag;
-  int pinCount;
-  int lastUsedTime;
+  int Size;
+  string Name;
   vector<string> content;
 
  public:
-  Page();
+    Page();
+    Page(int Size, string Name);
 
-  int pageCapacity;
+    int getSize();
+    void setSize(int size);
+    string getName();
+    void setName(string name);
+    // Añade el contenido de un registro a la página si hay suficiente espacio
+    bool addRecordInContent(string& record);
+     // Elimina un registro de la página en el índice especificado
+    bool deleteRecordInContent(int index);
+     // Devuelve el contenido de todos los registros de la página
+    vector<string>& getContent();
 
-  void activateDirty();
-  void incrementPinCount();
-  void decrementPinCount();
-
-  int getPinCount() const;
-  bool isDirty() const;
-  int getLastUsedTime() const;
-  void updateLastUsedTime(int currentTime);
-  void setContent(string record);
-  const vector<string>& getContent() const;
-
-  void setPageCapacity(int capacity);
-  void setFrameID(int id);
-  void setDirtyFlag(bool dirty);
-  void setPinCount(int count);
-  void setLastUsedTime(int time);
 };
 
 #endif  // PAGE_H
