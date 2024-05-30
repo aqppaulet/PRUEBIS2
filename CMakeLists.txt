@@ -5,8 +5,9 @@ project(MyProject)
 set(SOURCES
     main.cpp
     src/Page.cpp
-    src/Buffer.cpp
-    src/BufferPoolManager.cpp
+    src/BufferManager.cpp
+    src/BufferPool.cpp
+    src/Frame.cpp
     src/LRU.cpp
 )
 
