@@ -2,54 +2,48 @@
 
 #include <iostream>
 
-//Constructor por defecto que inicializa los atributos de la página con valores predeterminados
-Page::Page()
-    : pageCapacity(120),
-      frameID(-1),
-      dirty_flag(false),
-      pinCount(0),
-      lastUsedTime(0),
-      content() {}
 
-//Marca la página como sucia, indicando que ha sido modificada
-void Page::activateDirty() { dirty_flag = true; }
 
-//Incrementa el contador de pin cuando la pagina es usada
-void Page::incrementPinCount() { ++pinCount; }
+Page::Page() : Size(0), Name("") {}
 
-//Decrementa el contador de pines si es mayor que cero
-void Page::decrementPinCount() {
-  if (pinCount > 0) {
-    --pinCount;
-  }
+Page::Page(int size, string name) : Size(size), Name(name) {}
+
+int Page::getSize() {
+    return Size;
 }
 
-//Devuelve el contador de pines actual
-int Page::getPinCount() const { return pinCount; }
-
-//Devuelve la marca de la página como sucia
-bool Page::isDirty() const { return dirty_flag; }
-
-
-const vector<string>& Page::getContent() const { return content; }
-
-void Page::setContent(string record) {
-  if (this->pageCapacity < record.length()) {
-    cout << "= ===================================" << endl;
-    cout << "Error: La capcidad excedio su limite" << endl;
-    cout << "= ===================================" << endl;
-    return;
-  }
-  content.push_back(record);
-  this->pageCapacity -= record.length();
+void Page::setSize(int size) {
+    Size = size;
 }
 
-void Page::setPageCapacity(int capacity) { pageCapacity = capacity; }
+string Page::getName() {
+    return Name;
+}
 
-void Page::setFrameID(int id) { frameID = id; }
+void Page::setName(string name) {
+    Name = name;
+}
 
-void Page::setDirtyFlag(bool dirty) { dirty_flag = dirty; }
+bool Page::addRecordInContent(string& record) {
+    // Asumiendo que cada carácter cuenta como un byte
+    int recordSize = record.size();
+    if (recordSize <= Size) {
+        content.push_back(record);
+        Size -= recordSize; // Ajustar el tamaño restante
+        return true;
+    }
+    return false;
+}
 
-void Page::setPinCount(int count) { pinCount = count; }
+bool Page::deleteRecordInContent(int index) {
+    if (index >= 0 && index < content.size()) {
+        Size += content[index].size(); // Recuperar el tamaño del registro eliminado
+        content.erase(content.begin() + index);
+        return true;
+    }
+    return false;
+}
 
-
+vector<string>& Page::getContent() {
+    return content;
+}
