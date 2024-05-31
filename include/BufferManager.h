@@ -1,17 +1,18 @@
 #ifndef BUFFERMANAGER_H
 #define BUFFERMANAGER_H
 
+/*Erick Malcoaccha | Jose Paredes*/
 
 #include <iostream>
 
 #include "BufferPool.h"
 
 class BufferManager {
-private:
+   private:
     BufferPool bpool;
     int numFrames;
 
-public:
+   public:
     // Constructor
     BufferManager(int numFrames);
 
@@ -23,5 +24,4 @@ public:
     void deletePage(int pageID);
 };
 
-#endif // BUFFERMANAGER_H
-
+#endif  // BUFFERMANAGER_H

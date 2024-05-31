@@ -1,13 +1,12 @@
 #include "../include/BufferManager.h"
+
 #include "../include/Frame.h"
 #include "../include/Page.h"
 
-
-
-//configura LRU (Least Recently Used) con el número total de frames.
+// configura LRU (Least Recently Used) con el número total de frames.
 
 BufferManager::BufferManager(int numFrames) {
-  this->numFrames = numFrames;
+    this->numFrames = numFrames;
 }
 
 /*
@@ -18,37 +17,36 @@ guarda la página reemplazada en el disco y luego carga la nueva página en ese 
 */
 
 void BufferManager::loadPageFromDisk(string blockPath, int pageID, char _mode) {
+    bool mode = _mode == 'w' ? true : false;
+    if (bpool.isPageLoaded(pageID)) {
+        cout << "La pagina ya esta cargada" << endl;
+        bpool.getFrame(bpool.getFrameId(pageID)).setDirtyFlag(true);
+        bpool.modifyPinInExistingFrame(pageID, 'i');
+        bpool.incrementHistory();
+        bpool.printTableFrame();
+        return;
+    }
 
-  bool mode = _mode == 'W' ? true : false;
-  if (bpool.isPageLoaded(pageID)) {
-    cout << "La pagina ya esta cargada" << endl;
-    bpool.getFrame(bpool.getFrameId(pageID)).setDirtyFlag(true);
-    bpool.modifyPinInExistingFrame(pageID, 'i');
+    Page tempPage;
+    tempPage.setName(blockPath);
+    tempPage.setPageId(pageID);
+
+    int idFree = bpool.findFreeFrame();
+    Frame tempFrame(idFree);
+    tempFrame.setDirtyFlag(mode);
+    tempFrame.setPage(tempPage);
+    tempFrame.incrementPinCount();
+
+    bpool.setPageInFrame(idFree, pageID, tempFrame);
+    bpool.incrementHistory();
     bpool.printTableFrame();
-    return;
-  }
-
-
-  Page tempPage;
-  tempPage.setName(blockPath);
-  tempPage.setPageId(pageID);
-
-  int idFree = bpool.findFreeFrame();
-  Frame tempFrame(idFree);
-  tempFrame.setDirtyFlag(mode);
-  tempFrame.setPage(tempPage);
-  tempFrame.incrementPinCount();
-
-  bpool.setPageInFrame(idFree, pageID,tempFrame);
-
-  bpool.printTableFrame();
 }
 
 void BufferManager::killProcess(int pageID) {
-  bpool.modifyPinInExistingFrame(pageID, 'k');
-  bpool.printTableFrame();
+    bpool.modifyPinInExistingFrame(pageID, 'k');
+    // bpool.incrementHistory();
+    bpool.printTableFrame();
 }
-
 
 /*
   Permite al usuario interactuar con el buffer pool para agregar registros o mostrar una página específica.
