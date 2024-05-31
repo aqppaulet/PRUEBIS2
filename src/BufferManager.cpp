@@ -1,12 +1,13 @@
-#include "../include/BufferPoolManager.h"
+#include "../include/BufferManager.h"
+#include "../include/Frame.h"
+#include "../include/Page.h"
 
 
 
 //configura LRU (Least Recently Used) con el número total de frames.
 
-BufferPoolManager::BufferPoolManager() {
-  this->numFramesTotal = 3;
-  LRU_replace = LRU(numFramesTotal);
+BufferManager::BufferManager(int numFrames) {
+  this->numFrames = numFrames;
 }
 
 /*
@@ -16,9 +17,10 @@ Si todos los frames están ocupados, selecciona un frame para reemplazar usando 
 guarda la página reemplazada en el disco y luego carga la nueva página en ese frame.
 */
 
-void BufferPoolManager::loadPageFromDisk(string blockPath) {
+void BufferManager::loadPageFromDisk(string blockPath, int pageID) {
+  Frame tempFrame;
   Page tempPage;
-  int newId = bf.freeFrame();
+
 
   // Si es -2 es porque todos los frames ya estan ocupados
   if (newId == -2) {
@@ -35,8 +37,6 @@ void BufferPoolManager::loadPageFromDisk(string blockPath) {
 
   tempPage.setFrameID(newId);
 
-  tempPage.setContent("Megatron       5345453   Cybertron");
-  tempPage.setContent("OptimusPrime   3334454   Cybertron");
   // tempPage.setContent("Bomboldi       9999999   Cybertron");
   // tempPage.setContent("Ultron         5465464   Primal   ");
 
@@ -49,7 +49,7 @@ void BufferPoolManager::loadPageFromDisk(string blockPath) {
   Permite al usuario interactuar con el buffer pool para agregar registros o mostrar una página específica.
 
 */
-void BufferPoolManager::updatePage() {
+void BufferManager::updatePage() {
   cout << "===================================" << endl;
   cout << "Que deseas realizar?" << endl;
   cout << "1. Añadir registro" << endl;
@@ -70,7 +70,7 @@ void BufferPoolManager::updatePage() {
   }
 }
 
-void BufferPoolManager::savePageToDisk(int pageId) {
+void BufferManager::savePageToDisk(int pageId) {
   Page newfreeFrame;
   if (bf.pageIsDirty(pageId) == true) {
     cout << "Saving page in the DISK" << endl;

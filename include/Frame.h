@@ -12,19 +12,24 @@ class Frame {
 
    public:
     // Constructor
-    Frame(int id, bool dirty, int pin, Page pg);
+    Frame(int frameID);
+
 
     // Getters
-    int getFrameID() const;
-    bool isDirty() const;
-    int getPinCount() const;
-    Page getPage() const;
+    int getframeID();
+    bool isDirty();
+    int getPinCount();
+
+
+    Page& getPage();
 
     // Setters
     void setFrameID(int id);
     void setDirtyFlag(bool dirty);
     void setPinCount(int pin);
     void setPage(Page pg);
+    void incrementPinCount();
+    void decrementPinCount();
 };
 
 #endif  // FRAME_H

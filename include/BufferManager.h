@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "BufferPool.h"
-#include "Page.h"
 
 class BufferManager {
 private:
@@ -17,9 +16,9 @@ public:
     BufferManager(int numFrames);
 
     // Métodos
-    void loadPageFromDisk(int pageID);
+    void loadPageFromDisk(string blockPath, int pageID);
     void savePageToDisk(int pageID);
-    void updatePage(int pageID, const Page& newPageData);
+    void updatePage(int pageID);
     void deletePage(int pageID);
 };
 
