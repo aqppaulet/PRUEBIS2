@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-
-
 Page::Page() : Size(0), Name("") {}
 
 Page::Page(int size, string name) : Size(size), Name(name) {}
@@ -29,7 +27,7 @@ bool Page::addRecordInContent(string& record) {
     int recordSize = record.size();
     if (recordSize <= Size) {
         content.push_back(record);
-        Size -= recordSize; // Ajustar el tamaño restante
+        Size -= recordSize;  // Ajustar el tamaño restante
         return true;
     }
     return false;
@@ -37,7 +35,7 @@ bool Page::addRecordInContent(string& record) {
 
 bool Page::deleteRecordInContent(int index) {
     if (index >= 0 && index < content.size()) {
-        Size += content[index].size(); // Recuperar el tamaño del registro eliminado
+        Size += content[index].size();  // Recuperar el tamaño del registro eliminado
         content.erase(content.begin() + index);
         return true;
     }

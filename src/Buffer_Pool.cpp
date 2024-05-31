@@ -7,17 +7,6 @@
 
 using namespace std;
 
-/* Temporal */
-// *************************************************
-Frame::Frame(int id, bool dirty, int pin, Page pg) {
-    this->frameID = id;
-    this->dirty_flag = dirty;
-    this->pinCount = pin;
-    this->page = pg;
-}
-// *************************************************
-/* Temporal */
-
 BufferPool::BufferPool() {
     this->numFrames = 6;
     this->capacity = 720;
