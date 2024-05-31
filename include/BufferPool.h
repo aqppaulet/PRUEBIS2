@@ -19,7 +19,8 @@ class BufferPool {
     unordered_map<int, int> page_table;
 
    public:
-    BufferPool();                                              /* Constructor donde ira creando los frames vacios */
+    BufferPool();                                              /* Constructor por defecto */
+    BufferPool(int numFrames);                                 /* Constructor donde ira creando los frames vacios */
     vector<Frame>& getFrames();                                /* Sera para obtener el vector que contiene los frames */
     Frame& getFrame(int frameID);                              /* Obtener un frame en especifico */
     void modifyPinInExistingFrame(int pageID, char flag);      /* Incrementar el pin de un frame */

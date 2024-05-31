@@ -9,7 +9,12 @@
 using namespace std;
 
 BufferPool::BufferPool() {
-    this->numFrames = 6;
+    this->numFrames = 0;
+    this->capacity = 720;
+}
+
+BufferPool::BufferPool(int numFrames) {
+    this->numFrames = numFrames;
     this->capacity = 720;
 
     for (int i = 0; i < this->numFrames; i++) {
@@ -116,14 +121,9 @@ void BufferPool::pageIsDirty(int pageID) {
 
 void BufferPool::freeFrame(int frameID) {
     if (frameID >= 0 && frameID < numFrames) {
-        if (page_table[frameID] == 1) {
-            Frame &frame = frames[frameID];
-            frame.incrementPinCount();
-            page_table[frameID] = -1;
-            cout << "Frame liberado correctamente." << endl;
-        } else {
-            cout << "Frame ID: " << frameID << " no contiene una página." << endl;
-        }
+        frames[frameID] = Frame(frameID);
+        page_table[frameID] = -1;
+        cout << "Frame [" << frameID << "] liberado correctamente." << endl;
     } else {
         cout << "Frame ID fuera de rango." << endl;
     }
@@ -198,10 +198,24 @@ void BufferPool::incrementHistory() {
     }
 }
 
-void LRU() {
+void BufferPool::LRU() {
     cout << "LRU" << endl;
     /*
     En el unordered_map history, se guardará el frameID y el tiempo en el que fue accedido. Atraves de las veces que se llame en general con +1.
     Ahora se buscara cual frame tiene mas tiempo en estar. Luego se revisara si el pin count esta en cero y ahi recien se llamara la funcion freeFrame.
     */
+    int max = 0;
+    int lastUsedFrame = 0;
+    for (auto &pair : history) {
+        if (pair.second > max) {
+            max = pair.second;
+            lastUsedFrame = pair.first;
+        }
+    }
+    if (frames[lastUsedFrame].getPinCount() == 0) {
+        history[lastUsedFrame] = 0;
+        freeFrame(lastUsedFrame);
+    } else {
+        cout << "No se puede liberar el frame " << lastUsedFrame << " porque tiene un pin count mayor a 0" << endl;
+    }
 }

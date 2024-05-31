@@ -9,8 +9,8 @@
 
 class BufferManager {
    private:
-    BufferPool bpool;
     int numFrames;
+    BufferPool bpool;
 
    public:
     // Constructor
@@ -22,6 +22,7 @@ class BufferManager {
     void savePageToDisk(int pageID);
     void updatePage(int pageID);
     void deletePage(int pageID);
+    void printTableFrame();
 };
 
 #endif  // BUFFERMANAGER_H
