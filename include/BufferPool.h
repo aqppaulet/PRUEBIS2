@@ -8,10 +8,6 @@
 
 using namespace std;
 
-struct Frame {
-    string data;
-};
-
 class BufferPool {
    private:
     int numFrames;
