@@ -1,14 +1,16 @@
 #ifndef FRAME_H
 #define FRAME_H
 
+#include "Page.h"
+
 class Frame {
-private:
+   private:
     int frameID;
     bool dirty_flag;
     int pinCount;
     Page page;
 
-public:
+   public:
     // Constructor
     Frame(int id, bool dirty, int pin, Page pg);
 
@@ -25,5 +27,4 @@ public:
     void setPage(Page pg);
 };
 
-#endif // FRAME_H
-
+#endif  // FRAME_H

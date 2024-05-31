@@ -23,4 +23,4 @@ run: main clean
 	./main
 
 clean:
-	rm -rf build
+		rm -rf build
