@@ -6,9 +6,8 @@ set(SOURCES
     main.cpp
     src/Page.cpp
     src/BufferManager.cpp
-    src/BufferPool.cpp
+    src/Buffer_Pool.cpp
     src/Frame.cpp
-    src/LRU.cpp
 )
 
 # Establece el directorio de salida para los archivos compilados

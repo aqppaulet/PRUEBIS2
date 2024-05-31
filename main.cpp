@@ -5,7 +5,7 @@
 
 /* Erick Malcoaccha*/
 int main() {
-  BufferManager BfManger;
+  BufferManager BfManger(5);
 
   while (true) {
     int instruction;
@@ -18,6 +18,7 @@ int main() {
     cout << "5. Exit" << endl;
     cout << "================================================================"
          << endl;
+    cout << "Option: ";
     cin >> instruction;
 
     if (instruction == 5) {
@@ -29,7 +30,13 @@ int main() {
       char mode;
       cout << "Mode: ";
       cin >> mode;
-      // BfManger.loadPageFromDisk("bloque1");
+      int pageid;
+      cout << "Page ID: ";
+      cin >> pageid;
+      string blockPath;
+      cout << "Block Path: ";
+      cin >> blockPath;
+      BfManger.loadPageFromDisk(blockPath, pageid, mode);
     } else if (instruction == 2) {
       // BfManger.updatePage();
     } else if (instruction == 3) {
@@ -37,6 +44,7 @@ int main() {
       int pageid;
       cout << "Page ID: ";
       cin >> pageid;
+      BfManger.killProcess(pageid);
     } else if (instruction == 4) {
       cout << "Indica la pagina que deseas guardar" << endl;
       /* Aqui deberia retornarme un error si la pagina tiene procesos sin

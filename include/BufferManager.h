@@ -16,7 +16,8 @@ public:
     BufferManager(int numFrames);
 
     // Métodos
-    void loadPageFromDisk(string blockPath, int pageID);
+    void loadPageFromDisk(string blockPath, int pageID, char _mode);
+    void killProcess(int pageID);
     void savePageToDisk(int pageID);
     void updatePage(int pageID);
     void deletePage(int pageID);

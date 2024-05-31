@@ -17,31 +17,36 @@ Si todos los frames están ocupados, selecciona un frame para reemplazar usando 
 guarda la página reemplazada en el disco y luego carga la nueva página en ese frame.
 */
 
-void BufferManager::loadPageFromDisk(string blockPath, int pageID) {
-  Frame tempFrame;
-  Page tempPage;
+void BufferManager::loadPageFromDisk(string blockPath, int pageID, char _mode) {
 
-
-  // Si es -2 es porque todos los frames ya estan ocupados
-  if (newId == -2) {
-    newId = LRU_replace.getLRUforDelete();
-    LRU_replace.deletePageIDfromLRU();
-
-    savePageToDisk(newId);
-
-    LRU_replace.addPageIDtoLRU(newId);
-
-  } else {
-    LRU_replace.addPageIDtoLRU(newId);
+  bool mode = _mode == 'W' ? true : false;
+  if (bpool.isPageLoaded(pageID)) {
+    cout << "La pagina ya esta cargada" << endl;
+    bpool.getFrame(bpool.getFrameId(pageID)).setDirtyFlag(true);
+    bpool.modifyPinInExistingFrame(pageID, 'i');
+    bpool.printTableFrame();
+    return;
   }
 
-  tempPage.setFrameID(newId);
 
-  // tempPage.setContent("Bomboldi       9999999   Cybertron");
-  // tempPage.setContent("Ultron         5465464   Primal   ");
+  Page tempPage;
+  tempPage.setName(blockPath);
+  tempPage.setPageId(pageID);
 
-  bf.setPage(tempPage, newId);
-  LRU_replace.printLRU();
+  int idFree = bpool.findFreeFrame();
+  Frame tempFrame(idFree);
+  tempFrame.setDirtyFlag(mode);
+  tempFrame.setPage(tempPage);
+  tempFrame.incrementPinCount();
+
+  bpool.setPageInFrame(idFree, pageID,tempFrame);
+
+  bpool.printTableFrame();
+}
+
+void BufferManager::killProcess(int pageID) {
+  bpool.modifyPinInExistingFrame(pageID, 'k');
+  bpool.printTableFrame();
 }
 
 
@@ -49,7 +54,7 @@ void BufferManager::loadPageFromDisk(string blockPath, int pageID) {
   Permite al usuario interactuar con el buffer pool para agregar registros o mostrar una página específica.
 
 */
-void BufferManager::updatePage() {
+/*void BufferManager::updatePage() {
   cout << "===================================" << endl;
   cout << "Que deseas realizar?" << endl;
   cout << "1. Añadir registro" << endl;
@@ -78,4 +83,4 @@ void BufferManager::savePageToDisk(int pageId) {
   } else {
     bf.setPage(newfreeFrame, pageId);
   }
-}
+}*/
