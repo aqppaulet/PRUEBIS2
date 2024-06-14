@@ -11,16 +11,20 @@ using namespace std;
 BufferPool::BufferPool() {
     this->numFrames = 0;
     this->capacity = 720;
+    this->clock_pointer = 0;
 }
 
 BufferPool::BufferPool(int numFrames) {
     this->numFrames = numFrames;
     this->capacity = 720;
+    this->clock_pointer = numFrames-1; // Inicializar el puntero del reloj
+    
 
     for (int i = 0; i < this->numFrames; i++) {
         Frame frame(i);
         this->frames.push_back(frame);
         page_table[i] = -1;
+         use_bits.push_back(false); // Inicializar los bits de uso
     }
 }
 
@@ -131,7 +135,11 @@ void BufferPool::freeFrame(int frameID) {
 
 int BufferPool::findFreeFrame() {
     for (auto it = page_table.begin(); it != page_table.end(); ++it) {
-        if (it->second == -1) return it->first;
+        if (it->second == -1) 
+        {   
+            use_bits[it->first] = true; // Marcar el bit de uso
+            return it->first;
+        }
     }
 
     /*Si retorna -2 es porque todos los frames ya tienen cargado una pagina*/
@@ -147,16 +155,15 @@ void BufferPool::setPageInFrame(int frameID, int pageID, Frame &frame) {
         return;
     }
 
-    // printTableFrame();
-
     cout << "\nPagina [" << frameID << "] cargada Correctamente\n"
          << endl;
-    setHistory(pageID);
+    //setHistory(pageID); // Guardar el historial de la página
 }
 
 bool BufferPool::isPageLoaded(int pageID) {
     for (const auto &pair : page_table) {
         if (pair.second == pageID) {
+            use_bits[pair.first] = true;
             return true;
         }
     }
@@ -177,15 +184,19 @@ void BufferPool::printTableFrame() {
          << setw(10) << "Page Id" << "\t"
          << setw(10) << "Dirty Bit" << "\t"
          << setw(10) << "Pin Count" << "\t"
-         << setw(10) << "Last Used" << endl;
+         << setw(10) << "Last Used" <<"\t" 
+         << setw(10) << "bit" << endl;
 
     for (int i = 0; i < frames.size(); i++) {
         cout << setw(10) << frames[i].getframeID() << "\t"
              << setw(10) << frames[i].getPage().getPageId() << "\t"
              << setw(10) << (frames[i].isDirty() ? "Yes" : "No") << "\t"
              << setw(10) << frames[i].getPinCount() << "\t"
-             << setw(10) << history[frames[i].getframeID()] << "\t" << endl;
+             << setw(10) << history[frames[i].getframeID()] << "\t"
+             << setw(10) << use_bits[i] << endl;
     }
+
+    
 }
 
 void BufferPool::setHistory(int pageID) {
@@ -197,6 +208,8 @@ void BufferPool::incrementHistory() {
         if (pair.second != -1) history[pair.first]++;
     }
 }
+
+
 
 void BufferPool::LRU() {
     cout << "LRU" << endl;
@@ -219,3 +232,50 @@ void BufferPool::LRU() {
         cout << "No se puede liberar el frame " << lastUsedFrame << " porque tiene un pin count mayor a 0" << endl;
     }
 }
+
+void BufferPool::Clock() {
+    int iterations = 0; // Contador de iteraciones
+
+    while (iterations < numFrames*2) { // Limitar el número de iteraciones a numFrames
+        cout << "----entrada---"<<clock_pointer<< "------------" << endl;
+        
+        if (!use_bits[clock_pointer] && frames[clock_pointer].getPinCount() == 0) {
+            // Si el bit de uso es 0 y el pin count es 0, reemplazar este frame
+            freeFrame(clock_pointer);
+            clock_pointer = (clock_pointer == 0) ? numFrames - 1 : clock_pointer - 1;
+            return;
+        } else {
+            cout<<use_bits[clock_pointer]<<endl;
+            // Si el bit de uso es 1, ponerlo a 0 y avanzar el puntero
+            use_bits[clock_pointer] = false;
+            clock_pointer = (clock_pointer == 0) ? numFrames - 1 : clock_pointer - 1;
+        }
+
+        iterations++; // Incrementar el contador de iteraciones
+    }
+
+    // Si se inspeccionaron todos los frames y no se encontró ninguno para reemplazar
+    if (iterations >= numFrames) {
+        while(true){
+             char response;
+                cout << "El frame " << clock_pointer << " tiene un pin count mayor a 0. ¿Desea liberarlo? (y/n): ";
+                cin>>response;
+
+                if(response == 'y')
+                {
+                    freeFrame(clock_pointer);
+                    clock_pointer = (clock_pointer == 0) ? numFrames - 1 : clock_pointer - 1;
+                    return;
+                }
+                else
+                {
+                    clock_pointer = (clock_pointer == 0) ? numFrames - 1 : clock_pointer - 1;
+                    continue;
+                }
+
+        }
+    }
+    
+    cout << "--salida-----"<<clock_pointer<< "------------" << endl;
+}
+

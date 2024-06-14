@@ -17,6 +17,8 @@ class BufferPool {
     vector<Frame> frames;
     unordered_map<int, int> history;
     unordered_map<int, int> page_table;
+    vector<bool> use_bits; // Bits de uso para el algoritmo Clock
+    int clock_pointer; // Puntero del reloj
 
    public:
     BufferPool();                                              /* Constructor por defecto */
@@ -38,4 +40,8 @@ class BufferPool {
     void setHistory(int pageID);                               /* Guardar el historial de las paginas */
     void incrementHistory();                                   /* Incrementar el historial de las paginas */
     void LRU();                                                /* El LRU */
+    void Clock();                                              /* El Clock */
+
+    void policy();                                             /* La politica de reemplazo */
+    
 };

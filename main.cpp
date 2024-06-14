@@ -5,7 +5,10 @@
 
 /* Erick Malcoaccha*/
 int main() {
-    BufferManager BfManger(2);
+    char policy;
+    cout << " Indica el algoritmo de reemplazo que deseas usar L/C" << endl;
+    cin >> policy;
+    BufferManager BfManger(4, policy);
 
     while (true) {
         int instruction;

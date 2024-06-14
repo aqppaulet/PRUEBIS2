@@ -11,10 +11,11 @@ class BufferManager {
    private:
     int numFrames;
     BufferPool bpool;
+    char policy;
 
    public:
     // Constructor
-    BufferManager(int numFrames);
+    BufferManager(int numFrames, char policy);
 
     // Métodos
     void loadPageFromDisk(string blockPath, int pageID, char _mode);

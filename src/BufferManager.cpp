@@ -5,9 +5,10 @@
 
 // configura LRU (Least Recently Used) con el número total de frames.
 
-BufferManager::BufferManager(int numFrames) {
+BufferManager::BufferManager(int numFrames, char policy) {
     this->numFrames = numFrames;
     this->bpool = BufferPool(numFrames);
+    this->policy = policy;
 }
 
 /*
@@ -21,14 +22,24 @@ void BufferManager::loadPageFromDisk(string blockPath, int pageID, char _mode) {
     bool mode = _mode == 'w' ? true : false;
     if (bpool.isPageLoaded(pageID)) {
         cout << "La pagina ya esta cargada" << endl;
-        bpool.getFrame(bpool.getFrameId(pageID)).setDirtyFlag(true);
+        if (mode) {
+            bpool.getFrame(bpool.getFrameId(pageID)).setDirtyFlag(true);
+        }
         bpool.modifyPinInExistingFrame(pageID, 'i');
         bpool.incrementHistory();
         bpool.printTableFrame();
         return;
     }
 
-    bpool.LRU();
+    if (policy == 'L') {
+        bpool.LRU();
+    } else if (policy == 'C') {
+        bpool.Clock();
+    } else {
+        cout << "Politica de reemplazo no valida" << endl;
+        return;
+    }
+
 
     Page tempPage;
     tempPage.setName(blockPath);
