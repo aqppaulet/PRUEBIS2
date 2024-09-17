@@ -2,14 +2,16 @@
 #define FRAME_H
 
 #include "Page.h"
+#include <queue>
+#include <iostream>
 
 class Frame {
    private:
     int frameID;
-    bool dirty_flag;
+    queue<bool> dirty_flag;
     int pinCount;
     Page page;
-
+    
    public:
     // Constructor
     Frame(int frameID);
@@ -17,7 +19,7 @@ class Frame {
 
     // Getters
     int getframeID();
-    bool isDirty();
+    bool isDirty () const;
     int getPinCount();
 
 
@@ -26,6 +28,7 @@ class Frame {
     // Setters
     void setFrameID(int id);
     void setDirtyFlag(bool dirty);
+    void freeDirtyFlag();
     void setPinCount(int pin);
     void setPage(Page pg);
     void incrementPinCount();

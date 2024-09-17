@@ -30,7 +30,7 @@ class BufferPool {
     void printPage(int frameID);                               /* Mostrar el contenido de la pagina, pero hay que comprobar que este el frameid */
     void addRecord(int frameID, string record);                /* Usando la ubicacion del frame la agregamos un registro */
     void deleteRecord(int frameID, string record);             /* Lo anterio pero para eliminar */
-    void pageIsDirty(int pageID);                              /* le decimos al frame que sea diry o comprobar para cambiar a void*/
+    void pageIsDirty(int pageID);                              /* No se utilizole decimos al frame que sea diry o comprobar para cambiar a void*/
     void freeFrame(int frameID);                               /* Liberar un frame */
     int findFreeFrame();                                       /* Encontrar un frame libre */
     void setPageInFrame(int frameID, int pageID, Frame& page); /* Cargar una pagina en un frame */

@@ -46,6 +46,7 @@ void BufferPool::modifyPinInExistingFrame(int pageID, char flag) {
                 frames[i].incrementPinCount();
             } else if (flag == 'k' && frames[i].getPinCount() > 0) {
                 frames[i].decrementPinCount();
+                frames[i].freeDirtyFlag();
             }
         }
     }
@@ -107,7 +108,7 @@ void BufferPool::deleteRecord(int frameID, string record) {
     }
 }
 
-void BufferPool::pageIsDirty(int pageID) {
+void BufferPool::pageIsDirty(int pageID) { //Jose Paredes : No se utilizo
     if (pageID >= 0 && pageID < numFrames) {
         if (page_table[pageID] == 1) {
             Frame &frame = frames[pageID];

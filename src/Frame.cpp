@@ -3,8 +3,9 @@
 /* Jose Paredes */
 // Constructor
 Frame::Frame(int frameID)
-    : frameID(frameID), dirty_flag(false), pinCount(0) {}
+    : frameID(frameID), pinCount(0) {
 
+}
 // Getter for frameID
 int Frame::getframeID() {
     return frameID;
@@ -21,13 +22,27 @@ void Frame::setPage(Page page) {
 }
 
 // Getter for dirty flag
-bool Frame::isDirty() {
-    return dirty_flag;
+bool Frame::isDirty() const {
+    std::queue<bool> copy = dirty_flag; // Hacemos una copia de la cola para iterar
+    while (!copy.empty()) {
+        if (copy.front() == true) {
+            return true; // Si encontramos un 'true', devolvemos 'true'
+        }
+        copy.pop(); // Pasamos al siguiente elemento
+    }
+    return false; // Si no encontramos ningún 'true', devolvemos 'false'
 }
 
 // Setter for dirty flag
-void Frame::setDirtyFlag(bool dirty_flag) {
-    this->dirty_flag = dirty_flag;
+void Frame::setDirtyFlag(bool dirtyF) {
+    dirty_flag.push(dirtyF); // Añadimos el valor a la cola
+}
+
+void Frame::freeDirtyFlag() {
+    if (!dirty_flag.empty()) {
+        dirty_flag.pop(); // Eliminamos el primer elemento de la cola
+        std::cout << "POP";
+    }
 }
 
 // Getter for pinCount

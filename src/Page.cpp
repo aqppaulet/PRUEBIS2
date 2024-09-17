@@ -24,6 +24,11 @@ void Page::setPageId(int pageId) {
   this->pageID = pageId;
 }
 
+
+void Page::setPagenextId(int pageId) {
+  this->pageID = pageId+1;
+}
+
 string Page::getName() {
   return Name;
 }
