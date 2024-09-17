@@ -25,8 +25,9 @@ void Page::setPageId(int pageId) {
 }
 
 
-void Page::setPagenextId(int pageId) {
+int Page::setPagenextId(int pageId) {
   this->pageID = pageId+1;
+  return pageID
 }
 
 string Page::getName() {
