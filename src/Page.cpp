@@ -25,6 +25,14 @@ void Page::setPageId(int pageId) {
 }
 
 
+int Page::PageCapacity(int pageId, int size){
+  this->pageID = pageId;
+  return size * pageId;
+
+}
+  
+
+
 int Page::setPagenextId(int pageId) {
   this->pageID = pageId+1;
   return pageID
